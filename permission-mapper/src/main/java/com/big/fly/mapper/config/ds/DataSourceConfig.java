@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 @MapperScan(basePackages = DataSourceConfig.PACKAGE, sqlSessionFactoryRef = "SqlSessionFactory")
 public class DataSourceConfig {
 
-	static final String PACKAGE = "com.dwd.example.mapper.dao";
+	static final String PACKAGE = "com.big.fly.mapper.dao";
 	static final String MAPPER_LOCATION = "classpath:mapping/*.xml";
 
 	@Value("${spring.datasource.url}")

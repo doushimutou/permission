@@ -7,11 +7,13 @@ import com.big.fly.mapper.entity.SysRoleExample;
 import com.big.fly.permission.RoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 /**
  * Description
  * Author ayt  on
  */
+@Component
 public class RoleServiceImpl implements RoleService {
 
 	private Logger logger = LoggerFactory.getLogger(RoleServiceImpl.class);
