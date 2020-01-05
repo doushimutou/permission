@@ -26,13 +26,13 @@ public class MenuController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ResponseBody
-	public Pagination<MenuResultDTO> getMenuList(@RequestBody(required = false) MenuParamDTO menuParamDTO) {
+	public Pagination<MenuResultDTO> getMenuList(MenuParamDTO menuParamDTO) {
 		return menuService.getMenuList(menuParamDTO);
 	}
 
 	@RequestMapping(value = "/tree", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Map<String,Object>> getMenuTree() {
+	public List<Map<String, Object>> getMenuTree() {
 		List<MenuResultDTO> list = new ArrayList<>();
 		return menuService.getMenuTree(list);
 	}

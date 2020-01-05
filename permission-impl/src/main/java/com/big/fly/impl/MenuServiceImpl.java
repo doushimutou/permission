@@ -1,6 +1,5 @@
 package com.big.fly.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.big.fly.domain.MenuParamDTO;
 import com.big.fly.domain.MenuResultDTO;
 import com.big.fly.domain.Pagination;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Description
@@ -31,7 +31,13 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	public Pagination<MenuResultDTO> getMenuList(MenuParamDTO menuParamDTO) {
 		SysMenuExample example = new SysMenuExample();
-		example.page(0, 20);
+		SysMenuExample.Criteria criteria = example.createCriteria();
+		if (menuParamDTO.getName() != null) {
+			criteria.andNameLike("%" + menuParamDTO.getName() + "%");
+		}
+		if (menuParamDTO.getStartTime() != null && menuParamDTO.getEndTime() != null) {
+			criteria.andCreateTimeBetween(menuParamDTO.getStartTime(), menuParamDTO.getEndTime());
+		}
 		List<SysMenu> list = sysMenuMapper.selectByExample(example);
 		List<MenuResultDTO> endTree = menuToTree(list);
 		Pagination<MenuResultDTO> sysMenuPagination = new Pagination<>();
@@ -42,6 +48,7 @@ public class MenuServiceImpl implements MenuService {
 	private List<MenuResultDTO> menuToTree(List<SysMenu> list) {
 		List<MenuResultDTO> treeList = new ArrayList<>();
 		List<MenuResultDTO> endTree = new ArrayList<>();
+		Set<Integer> ids = new HashSet<>();
 		//把treeList,sysmenu转成menuResultDTO
 		list.forEach(sysMenu -> {
 			MenuResultDTO menuResultDTO = new MenuResultDTO();
@@ -61,10 +68,18 @@ public class MenuServiceImpl implements MenuService {
 						menuResultDTO.setChildren(new ArrayList<>());
 					}
 					menuResultDTO.getChildren().add(menuResultDTO1);
+					ids.add(menuResultDTO1.getId());
 				}
 			});
 			logger.info("menuResultDTO:{}", menuResultDTO);
 		});
+		if (endTree.size() == 0) {
+			treeList.forEach(menuResultDTO -> {
+				if (!ids.contains(menuResultDTO.getId())) {
+					endTree.add(menuResultDTO);
+				}
+			});
+		}
 		return endTree;
 	}
 
@@ -88,7 +103,7 @@ public class MenuServiceImpl implements MenuService {
 
 	@Override
 	public Boolean delete(Integer id) {
-		return sysMenuMapper.deleteByPrimaryKey(id)>0;
+		return sysMenuMapper.deleteByPrimaryKey(id) > 0;
 	}
 
 	@Override

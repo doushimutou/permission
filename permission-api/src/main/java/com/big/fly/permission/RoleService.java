@@ -2,7 +2,7 @@ package com.big.fly.permission;
 
 import com.big.fly.domain.Pagination;
 import com.big.fly.domain.RoleParamDTO;
-import com.big.fly.mapper.entity.SysRole;
+import com.big.fly.domain.SysResultRole;
 
 /**
  * Created by ayt on ${DTAE}
@@ -14,7 +14,7 @@ public interface RoleService {
 	 * @param paramDTO
 	 * @return
 	 */
-	Pagination<SysRole> getRoleList(RoleParamDTO paramDTO);
+	Pagination<SysResultRole> getRoleList(RoleParamDTO paramDTO);
 
 	/**
 	 * 添加角色
@@ -32,8 +32,8 @@ public interface RoleService {
 
 	/**
 	 * 删除
-	 * @param id
+	 * @param name
 	 * @return
 	 */
-	Boolean delete(Integer id );
+	Boolean delete(String name );
 }
