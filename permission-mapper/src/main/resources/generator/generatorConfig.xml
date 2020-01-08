@@ -52,10 +52,9 @@
         <!--<generatedKey column="id" sqlStatement="MYSQL" identity="true" type="post"/>-->
         <!--</table>-->
         <table tableName="sys_user" domainObjectName="SysUser"
-               enableUpdateByExample="false"
                enableDeleteByExample="false"  selectByExampleQueryId="false"
                >
-            <!--<generatedKey column="id" sqlStatement="MYSQL" identity="true" type="post"/>-->
+            <generatedKey column="id" sqlStatement="MYSQL" identity="true" type="post"/>
             <!--<columnOverride column="responseData" jdbcType="VARCHAR"/>-->
         </table>
 
@@ -63,15 +62,28 @@
                enableUpdateByExample="false"
                enableDeleteByExample="false"  selectByExampleQueryId="false"
         >
-            <!--<generatedKey column="id" sqlStatement="MYSQL" identity="true" type="post"/>-->
+            <generatedKey column="id" sqlStatement="MYSQL" identity="true" type="post"/>
             <!--<columnOverride column="responseData" jdbcType="VARCHAR"/>-->
         </table>
         <table tableName="sys_menu" domainObjectName="SysMenu"
                enableUpdateByExample="false"
                enableDeleteByExample="false"  selectByExampleQueryId="false"
         >
-            <!--<generatedKey column="id" sqlStatement="MYSQL" identity="true" type="post"/>-->
+            <generatedKey column="id" sqlStatement="MYSQL" identity="true" type="post"/>
             <!--<columnOverride column="responseData" jdbcType="VARCHAR"/>-->
         </table>
+        <table tableName="sys_user_role" domainObjectName="SysUserRole"
+               enableUpdateByExample="false"
+                selectByExampleQueryId="false"
+        >
+            <generatedKey column="id" sqlStatement="MYSQL" identity="true" type="post"/>
+        </table>
+        <table tableName="sys_role_menu" domainObjectName="SysRoleMenu"
+               enableUpdateByExample="false"
+                 selectByExampleQueryId="false"
+        >
+            <generatedKey column="id" sqlStatement="MYSQL" identity="true" type="post"/>
+        </table>
+
     </context>
 </generatorConfiguration>

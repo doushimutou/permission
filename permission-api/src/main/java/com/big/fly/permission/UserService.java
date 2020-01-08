@@ -2,6 +2,7 @@ package com.big.fly.permission;
 
 import com.big.fly.domain.Pagination;
 import com.big.fly.domain.UserParamDTO;
+import com.big.fly.domain.UserResultDTO;
 import com.big.fly.mapper.entity.SysUser;
 
 /**
@@ -15,7 +16,7 @@ public interface UserService {
 	 * @param userParamDTO
 	 * @return
 	 */
-	Pagination<SysUser>	getUsetList(UserParamDTO userParamDTO);
+	Pagination<UserResultDTO>	getUserList(UserParamDTO userParamDTO);
 
 	/**
 	 * 添加用户
@@ -37,5 +38,11 @@ public interface UserService {
 	 * @return
 	 */
 	Boolean delete(int  userId);
+	/**
+	 * 启用/禁用
+	 * @param isActive 1启用 0 禁用
+	 * @return
+	 */
+	Boolean isActive(Boolean isActive ,int userId);
 
 }

@@ -124,10 +124,8 @@ public class MenuServiceImpl implements MenuService {
 			if (menuResultDTO.getChildren() != null && menuResultDTO.getChildren().size() > 0) {
 				map.put("children", getMenuTreeTo(menuResultDTO.getChildren()));
 			}
-
 			menuTreeList.add(map);
 		});
-
 		return menuTreeList;
 	}
 }

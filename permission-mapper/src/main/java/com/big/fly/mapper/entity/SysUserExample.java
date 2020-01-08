@@ -348,66 +348,6 @@ public class SysUserExample {
             return (Criteria) this;
         }
 
-        public Criteria andRoleIdIsNull() {
-            addCriterion("role_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleIdIsNotNull() {
-            addCriterion("role_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleIdEqualTo(Integer value) {
-            addCriterion("role_id =", value, "roleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleIdNotEqualTo(Integer value) {
-            addCriterion("role_id <>", value, "roleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleIdGreaterThan(Integer value) {
-            addCriterion("role_id >", value, "roleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("role_id >=", value, "roleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleIdLessThan(Integer value) {
-            addCriterion("role_id <", value, "roleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleIdLessThanOrEqualTo(Integer value) {
-            addCriterion("role_id <=", value, "roleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleIdIn(List<Integer> values) {
-            addCriterion("role_id in", values, "roleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleIdNotIn(List<Integer> values) {
-            addCriterion("role_id not in", values, "roleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleIdBetween(Integer value1, Integer value2) {
-            addCriterion("role_id between", value1, value2, "roleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRoleIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("role_id not between", value1, value2, "roleId");
-            return (Criteria) this;
-        }
-
         public Criteria andAccountIsNull() {
             addCriterion("account is null");
             return (Criteria) this;
@@ -418,52 +358,62 @@ public class SysUserExample {
             return (Criteria) this;
         }
 
-        public Criteria andAccountEqualTo(Integer value) {
+        public Criteria andAccountEqualTo(String value) {
             addCriterion("account =", value, "account");
             return (Criteria) this;
         }
 
-        public Criteria andAccountNotEqualTo(Integer value) {
+        public Criteria andAccountNotEqualTo(String value) {
             addCriterion("account <>", value, "account");
             return (Criteria) this;
         }
 
-        public Criteria andAccountGreaterThan(Integer value) {
+        public Criteria andAccountGreaterThan(String value) {
             addCriterion("account >", value, "account");
             return (Criteria) this;
         }
 
-        public Criteria andAccountGreaterThanOrEqualTo(Integer value) {
+        public Criteria andAccountGreaterThanOrEqualTo(String value) {
             addCriterion("account >=", value, "account");
             return (Criteria) this;
         }
 
-        public Criteria andAccountLessThan(Integer value) {
+        public Criteria andAccountLessThan(String value) {
             addCriterion("account <", value, "account");
             return (Criteria) this;
         }
 
-        public Criteria andAccountLessThanOrEqualTo(Integer value) {
+        public Criteria andAccountLessThanOrEqualTo(String value) {
             addCriterion("account <=", value, "account");
             return (Criteria) this;
         }
 
-        public Criteria andAccountIn(List<Integer> values) {
+        public Criteria andAccountLike(String value) {
+            addCriterion("account like", value, "account");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountNotLike(String value) {
+            addCriterion("account not like", value, "account");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountIn(List<String> values) {
             addCriterion("account in", values, "account");
             return (Criteria) this;
         }
 
-        public Criteria andAccountNotIn(List<Integer> values) {
+        public Criteria andAccountNotIn(List<String> values) {
             addCriterion("account not in", values, "account");
             return (Criteria) this;
         }
 
-        public Criteria andAccountBetween(Integer value1, Integer value2) {
+        public Criteria andAccountBetween(String value1, String value2) {
             addCriterion("account between", value1, value2, "account");
             return (Criteria) this;
         }
 
-        public Criteria andAccountNotBetween(Integer value1, Integer value2) {
+        public Criteria andAccountNotBetween(String value1, String value2) {
             addCriterion("account not between", value1, value2, "account");
             return (Criteria) this;
         }

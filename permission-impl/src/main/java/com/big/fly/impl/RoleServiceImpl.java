@@ -6,9 +6,8 @@ import com.big.fly.domain.RoleParamDTO;
 import com.big.fly.domain.SysResultRole;
 import com.big.fly.mapper.dao.SysMenuMapper;
 import com.big.fly.mapper.dao.SysRoleMapper;
-import com.big.fly.mapper.entity.SysMenu;
-import com.big.fly.mapper.entity.SysRole;
-import com.big.fly.mapper.entity.SysRoleExample;
+import com.big.fly.mapper.dao.SysRoleMenuMapper;
+import com.big.fly.mapper.entity.*;
 import com.big.fly.permission.MenuService;
 import com.big.fly.permission.RoleService;
 import com.big.fly.utils.PageUtils;
@@ -34,9 +33,8 @@ public class RoleServiceImpl implements RoleService {
 	@Resource
 	SysRoleMapper sysRoleMapper;
 	@Resource
-	MenuServiceImpl menuServiceimpl;
-	@Resource
-	SysMenuMapper sysMenuMapper;
+	SysRoleMenuMapper roleMenuMapper;
+
 
 	@Override
 	public Pagination<SysResultRole> getRoleList(RoleParamDTO paramDTO) {
@@ -48,28 +46,29 @@ public class RoleServiceImpl implements RoleService {
 		if (paramDTO.getStartTime() != null && paramDTO.getEndTime() != null) {
 			criteria.andCreateTimeBetween(paramDTO.getStartTime(), paramDTO.getEndTime());
 		}
+		if (paramDTO.getPageNum() != null && paramDTO.getPageSize() != null) {
+			example.page(paramDTO.getPageNum(), paramDTO.getPageSize());
+		}
 		List<SysRole> list = sysRoleMapper.selectByExample(example);
 		List<SysResultRole> endRoles = new ArrayList<>();
-		//将查询到的list,按照name分组
-		Map<String, List<SysRole>> groupRole = list.stream().collect(Collectors.groupingBy(SysRole::getName));
-		//将分组后的数据整合，每组放进一个list
-		groupRole.forEach((name, sysRoles) -> {
+		list.forEach(sysRole -> {
+			//获取menuIds
+			SysRoleMenuExample sysRoleMenuExample = new SysRoleMenuExample();
+			sysRoleMenuExample.createCriteria().andRoleIdEqualTo(sysRole.getId());
+			List<SysRoleMenu> sysRoleMenus = roleMenuMapper.selectByExample(sysRoleMenuExample);
+			Set<Integer> menuIds = sysRoleMenus.stream().map(SysRoleMenu::getMenuId).collect(Collectors.toSet());
+			//sysResultRole 构造
 			SysResultRole sysResultRole = new SysResultRole();
-			Set<Integer> menuIds = sysRoles.stream().map(sysRole -> sysRole.getMenuId()).collect(Collectors.toSet());
 			sysResultRole.setMenuIds(menuIds);
-			sysResultRole.setName(name);
-			sysResultRole.setCreateTime(sysRoles.get(0).getCreateTime());
-			sysResultRole.setDesc(sysRoles.get(0).getDesc());
+			sysResultRole.setName(sysRole.getName());
+			sysResultRole.setDesc(sysRole.getDesc());
+			sysResultRole.setId(sysRole.getId());
+			sysResultRole.setCreateTime(sysRole.getCreateTime());
 			endRoles.add(sysResultRole);
 		});
-		//将最终的结果分页
-		List pageList = PageUtils.startPage(endRoles, paramDTO.getPageNum() + 1, paramDTO.getPageSize());
-		Integer conut = groupRole.size();
 		Pagination<SysResultRole> pagination = new Pagination<>();
-		pagination.setCurrentPage(paramDTO.getPageNum());
-		pagination.setPageSize(paramDTO.getPageSize());
-		pagination.setList(pageList);
-		pagination.setTotalCount(Math.toIntExact(conut));
+		pagination.setList(endRoles);
+		pagination.setTotalCount(Math.toIntExact(endRoles.size()));
 		return pagination;
 	}
 
@@ -84,12 +83,17 @@ public class RoleServiceImpl implements RoleService {
 		final boolean[] isSuccess = new boolean[1];
 		Set<Integer> menuIds = roleParamDTO.getMenuIds();
 		menuIds.forEach(menuId -> {
+			//更新role表
 			SysRole sysRole = new SysRole();
 			sysRole.setName(roleParamDTO.getName());
 			sysRole.setDesc(roleParamDTO.getDesc());
 			sysRole.setCreateTime(new Date());
-			sysRole.setMenuId(menuId);
-			isSuccess[0] = sysRoleMapper.insert(sysRole) > 0;
+			sysRoleMapper.insert(sysRole);
+			//更新rokle_menu 关联表
+			SysRoleMenu sysRoleMenu = new SysRoleMenu();
+			sysRoleMenu.setRoleId(sysRole.getId());
+			sysRoleMenu.setMenuId(menuId);
+			isSuccess[0] = roleMenuMapper.insert(sysRoleMenu) > 0;
 		});
 		return isSuccess[0];
 	}
@@ -103,27 +107,22 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	public Boolean update(RoleParamDTO roleParamDTO) {
 		//先把原来的数据删除掉
-		delete(roleParamDTO.getName());
+		delete(roleParamDTO.getId());
 		return add(roleParamDTO);
 	}
 
 	/**
 	 * 删除
 	 *
-	 * @param name
+	 * @param id
 	 * @return
 	 */
 	@Override
-	public Boolean delete(String name) {
-		SysRoleExample sysRoleExample = new SysRoleExample();
-		SysRoleExample.Criteria criteria = sysRoleExample.createCriteria();
-		criteria.andNameEqualTo(name);
-		List<SysRole> list = sysRoleMapper.selectByExample(sysRoleExample);
-		Set<Integer> sets = list.stream().map(SysRole::getId).collect(Collectors.toSet());
-		final boolean[] isSuccess = new boolean[1];
-		sets.forEach(id ->
-				isSuccess[0] = sysRoleMapper.deleteByPrimaryKey(id) > 0
-		);
-		return isSuccess[0];
+	public Boolean delete(Integer id) {
+		sysRoleMapper.deleteByPrimaryKey(id);
+		SysRoleMenuExample sysRoleMenuExample = new SysRoleMenuExample();
+		SysRoleMenuExample.Criteria criteria = sysRoleMenuExample.createCriteria();
+		criteria.andRoleIdEqualTo(id);
+		return roleMenuMapper.deleteByExample(sysRoleMenuExample) > 0;
 	}
 }

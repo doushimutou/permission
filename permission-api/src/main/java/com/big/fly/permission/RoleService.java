@@ -32,8 +32,7 @@ public interface RoleService {
 
 	/**
 	 * 删除
-	 * @param name
-	 * @return
+	 * @return id
 	 */
-	Boolean delete(String name );
+	Boolean delete(Integer id );
 }

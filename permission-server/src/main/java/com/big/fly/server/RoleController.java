@@ -42,8 +42,8 @@ public class RoleController {
 
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean delete(@RequestParam String name) {
-		return roleService.delete(name);
+	public Boolean delete(@RequestParam Integer id) {
+		return roleService.delete(id);
 	}
 
 
