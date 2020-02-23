@@ -45,4 +45,6 @@ public interface UserService {
 	 */
 	Boolean isActive(Boolean isActive ,int userId);
 
+
+
 }
